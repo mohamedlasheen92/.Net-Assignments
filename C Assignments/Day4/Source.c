@@ -1,6 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <windows.h>
+
+void gotoxy(int x, int y)
+{
+	COORD coord = { 0, 0 };
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+void textattr(int i)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), i);
+}
 
 int main() {
 
@@ -36,8 +49,8 @@ int main() {
 #pragma endregion
 
 #pragma region Assignment 3
-	//A Program to ger Extended Keys ASCII [Right,Left,Home,End,Del]
-
+	//A Program to get Extended Keys ASCII [Right,Left,Home,End,Del]
+	/*
 	char c;
 	int flag = 1;
 
@@ -77,11 +90,98 @@ int main() {
 		}
 
 	} while (flag != 0);
-
-
-
+	*/
 
 #pragma endregion
+
+#pragma region Assignment 4
+	//A Program to make Highlight Menu
+
+	char myChar;
+	char menu[5][12] = { "Add", "Edit", "Display", "Display All", "Exit" };
+	int currentChoice = 0;
+	int normalColor = 15;
+	int highlightColor = 100;
+	int quitFlag = 0;
+
+	do {
+		//Draw Menu
+		for (int i = 0; i < 5; i++) {
+			if (currentChoice == i) {
+				textattr(highlightColor);
+			}
+			else {
+				textattr(normalColor);
+			}
+
+			gotoxy(50, 1 + i);
+			printf("%s\n", menu[i]);
+			//Reset Color
+			textattr(normalColor);
+		}
+		printf("Enter a Character.");
+		myChar = getch();
+		switch (myChar) {
+
+		case -32:	//Case Extended
+			myChar = getch();
+			switch (myChar) {
+			case 72:	//UP
+				if (currentChoice == 0) currentChoice = 5;
+				currentChoice--;
+				break;
+			case 80:	//DOWN
+				if (currentChoice == 4) currentChoice = -1;
+				currentChoice++;
+				break;
+			case 73:	//PAGE UP
+				currentChoice = 0;
+				break;
+			case 81:	//PAGE DOWN
+				currentChoice = 4;
+				break;
+			default:
+				system("cls");
+				printf("This Extended Ke is %i\n", myChar);
+			}
+			break;
+		case 13:
+			system("cls");
+			switch (currentChoice) {
+			case 0:	//UP
+				printf("ADD");
+				break;
+			case 1:	//UP
+				printf("Edit");
+				break;
+			case 2:	//UP
+				printf("Display");
+				break;
+			case 3:	//UP
+				printf("Display All");
+				break;
+			case 4:	//UP
+				printf("Exit\n");
+				quitFlag = 1;
+				break;
+			}
+			break;
+		case 27:
+			system("cls");
+			printf("EXIT\n");
+			quitFlag = 1;
+			break;
+
+		default:
+			system("cls");
+			printf("The ASCII Code for Char %c : %i", myChar, myChar);
+			break;
+		}
+
+	} while (quitFlag != 1);
+
+#pragma endregion
+
 
 
 
