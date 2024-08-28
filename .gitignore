@@ -1,5 +1,8 @@
 .vs/
 x64/
+bin/
+obj/
+*.csproj
 *.vcxproj
 *.filters
 *.user
